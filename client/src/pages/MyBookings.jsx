@@ -4,6 +4,8 @@ import Title from '../components/Title'
 
 const MyBookings = () => {
   const currency = import.meta.env.VITE_CURRENCY
+  console.log('CURRENCY:', currency)
+  console.log('ALL ENV:', import.meta.env)
   const [bookings, setBookings] = useState([])
   const fetchMyBookings = async () => {
     setBookings(dummyMyBookingsData)
