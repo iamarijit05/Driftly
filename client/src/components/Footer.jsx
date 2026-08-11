@@ -44,7 +44,7 @@ const Footer = () => {
                     <ul className='mt-3 flex flex-col gap-1.5'>
                         <li>21 Rajani Sen Road, Saltlake</li>
                         <li>Kolkata, WB, India</li>
-                        <li>+91 1234567890</li>
+                        <li>+91-1234567890</li>
                         <li>driftly@arj05.com</li>
                     </ul>
                 </div>
