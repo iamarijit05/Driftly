@@ -149,7 +149,7 @@ export const getDashboardData = async (req, res) => {
     }
 }
 
-//API update user image
+// API update user image
 export const updateUserImage = async (req, res) => {
     try {
         const { _id } = req.user
@@ -173,19 +173,23 @@ export const updateUserImage = async (req, res) => {
             ]
         })
 
-        await User.findByIdAndUpdate(
+        const user = await User.findByIdAndUpdate(
             _id,
             { image: optimizedImageUrl },
             { new: true }
         )
 
+        console.log("NEW IMAGE URL:", user.image)
+
         res.json({
             success: true,
-            message: "Profile image updated"
+            message: "Profile image updated",
+            image: user.image
         })
 
     } catch (error) {
         console.log(error.message)
+
         res.json({
             success: false,
             message: error.message
