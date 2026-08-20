@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { assets } from '../../assets/assets'
 import Title from '../../components/owner/Title'
+import { useAppContext } from '../../context/AppContext'
+import toast from 'react-hot-toast'
 
 const AddCar = () => {
+  const {axios, currency} = useAppContext()
 
-  const currency = import.meta.env.VITE_CURRENCY
   const [image, setImage] = useState(null)
   const [car, setCar] = useState({
     brand: '',
@@ -18,9 +20,43 @@ const AddCar = () => {
     location: '',
     description: '',
   })
+  const [isLoading, setIsLoading] = useState(false)
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
+    if(isLoading) {
+      return null
+    }
+    setIsLoading(true)
+    try {
+      const formData = new FormData()
+      formData.append('image', image)
+      formData.append('CarData', JSON.stringify(car))
+
+      const { data } = await axios.post('api/owner/add-car', formData)
+      if(data.success) {
+        toast.success(data.message)
+        setImage(null)
+        setCar({
+          brand: '',
+          model: '',
+          year: 0,
+          pricePerDay: 0,
+          category: '',
+          transmission: '',
+          fuel_type: '',
+          seating_capacity: 0,
+          location: '',
+          description: '',
+        })
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -84,9 +120,9 @@ const AddCar = () => {
               <label>Transmission</label>
               <select onChange={e => setCar({...car, transmission: e.target.value})} value={car.transmission} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
                 <option value="">Select a Transmission</option>
-                <option value="Sedan">Autoamtic</option>
-                <option value="SUV">Manual</option>
-                <option value="Van">Semi-Automatic</option>
+                <option value="Automatic">Autoamtic</option>
+                <option value="Manual">Manual</option>
+                <option value="Semi-Automatic">Semi-Automatic</option>
               </select>
             </div>
 
@@ -95,6 +131,7 @@ const AddCar = () => {
               <select onChange={e => setCar({...car, fuel_type: e.target.value})} value={car.fuel_type} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
                 <option value="">Select Fuel Type</option>
                 <option value="Gas">Gas</option>
+                <option value="Petrol">Petrol</option>
                 <option value="Diesel">Diesel</option>
                 <option value="Electric">Electric</option>
                 <option value="Hybrid">Hybrid</option>
@@ -130,7 +167,7 @@ const AddCar = () => {
 
         <button className='flex items-center gap-2 px-4 py-2.5 mt-4 bg-primary text-white rounded-md font-medium w-max cursor-pointer'>
           <img src={assets.tick_icon} alt=""/>
-          List Your Car
+          {isLoading ? 'Listing...' : 'List Your Car'}
         </button>
       </form>
     </div>

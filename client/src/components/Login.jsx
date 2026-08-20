@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
+import { useAppContext } from '../context/AppContext'
+import toast from 'react-hot-toast'
 
-const Login = ({ setShowLogin }) => {
+const Login = () => {
+
+  const { setShowLogin, axios, setToken, navigate } = useAppContext()
+
   const [state, setState] = useState('login')
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -9,22 +14,38 @@ const Login = ({ setShowLogin }) => {
   const onSubmitHandler = async (event) => {
     event.preventDefault()
 
-    if (state === 'register') {
-      console.log('Register:', { name, email, password })
-    } else {
-      console.log('Login:', { email, password })
+    try {
+      const { data } = await axios.post(`/api/user/${state}`, {
+        name,
+        email,
+        password
+      })
+
+      if (data.success) {
+        navigate('/')
+        setToken(data.token)
+        localStorage.setItem('token', data.token)
+        setShowLogin(false)
+      } else {
+        toast.error(data.message)
+      }
+
+    } catch (error) {
+      toast.error(error.message)
     }
   }
 
   return (
     <div
-      onClick={(e) => e.stopPropagation()}
+      onClick={() => setShowLogin(false)}
       className='fixed top-0 bottom-0 left-0 right-0 z-100 flex items-center text-sm text-gray-600 bg-black/50'
     >
       <form
+        onClick={(e) => e.stopPropagation()}
         onSubmit={onSubmitHandler}
         className='flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] rounded-lg shadow-xl border border-gray-200 bg-white'
       >
+
         <p className='text-2xl font-medium m-auto'>
           <span className='text-primary'>User</span>{' '}
           {state === 'login' ? 'Login' : 'Sign Up'}
@@ -33,6 +54,7 @@ const Login = ({ setShowLogin }) => {
         {state === 'register' && (
           <div className='w-full'>
             <p>Name</p>
+
             <input
               onChange={(e) => setName(e.target.value)}
               value={name}
@@ -46,6 +68,7 @@ const Login = ({ setShowLogin }) => {
 
         <div className='w-full'>
           <p>Email</p>
+
           <input
             onChange={(e) => setEmail(e.target.value)}
             value={email}
@@ -58,6 +81,7 @@ const Login = ({ setShowLogin }) => {
 
         <div className='w-full'>
           <p>Password</p>
+
           <input
             onChange={(e) => setPassword(e.target.value)}
             value={password}
@@ -96,6 +120,7 @@ const Login = ({ setShowLogin }) => {
         >
           {state === 'register' ? 'Create Account' : 'Login'}
         </button>
+
       </form>
     </div>
   )
