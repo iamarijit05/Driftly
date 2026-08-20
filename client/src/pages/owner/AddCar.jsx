@@ -120,9 +120,9 @@ const AddCar = () => {
               <label>Transmission</label>
               <select onChange={e => setCar({...car, transmission: e.target.value})} value={car.transmission} className='px-3 py-2 mt-1 border border-borderColor rounded-md outline-none'>
                 <option value="">Select a Transmission</option>
-                <option value="Sedan">Autoamtic</option>
-                <option value="SUV">Manual</option>
-                <option value="Van">Semi-Automatic</option>
+                <option value="Automatic">Autoamtic</option>
+                <option value="Manual">Manual</option>
+                <option value="Semi-Automatic">Semi-Automatic</option>
               </select>
             </div>
 
