@@ -13,7 +13,7 @@ const Testimonial = () => {
             testimonial: "I've rented cars from various companies, but the experience with Driftly was exceptional."
         },
         {
-            name: "Smita Banerjee",
+            name: "Riya Sharma",
             location: "Delhi",
             image: assets.testimonial_image_2,
             testimonial: "Driftly made my trips much easier. The car was delivered right to my door, and the customer service was fantastic."
