@@ -1,4 +1,4 @@
-# Driftly 🚗
+# Driftly 
 
 Driftly is a full-stack **MERN car rental platform** where users can browse and book cars, and car owners can list and manage their own fleet through a dedicated dashboard.
 
