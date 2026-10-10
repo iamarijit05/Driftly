@@ -7,7 +7,8 @@ const checkAvailability = async (car, pickupDate, returnDate) => {
     const bookings = await Booking.find({
         car, 
         pickupDate: {$lte: returnDate},
-        returnDate: {$gte: pickupDate}
+        returnDate: {$gte: pickupDate},
+        status: {$ne: 'cancelled'}
     })
 
     return bookings.length === 0

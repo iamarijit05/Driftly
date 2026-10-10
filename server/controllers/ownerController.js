@@ -71,7 +71,7 @@ export const toggleCarAvailability = async (req, res) => {
 
         //checking if the car belongs to the owner
         if(car.owner.toString() !== _id.toString()) {
-            res.json({success: false, message: "Unauthorized Access"})
+            return res.json({success: false, message: "Unauthorized Access"})
         }
 
         car.isAvailable = !car.isAvailable;
